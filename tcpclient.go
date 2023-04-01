@@ -56,12 +56,13 @@ type tcpPackager struct {
 }
 
 // Encode adds modbus application protocol header:
-//  Transaction identifier: 2 bytes
-//  Protocol identifier: 2 bytes
-//  Length: 2 bytes
-//  Unit identifier: 1 byte
-//  Function code: 1 byte
-//  Data: n bytes
+//
+//	Transaction identifier: 2 bytes
+//	Protocol identifier: 2 bytes
+//	Length: 2 bytes
+//	Unit identifier: 1 byte
+//	Function code: 1 byte
+//	Data: n bytes
 func (mb *tcpPackager) Encode(pdu *ProtocolDataUnit) (adu []byte, err error) {
 	adu = make([]byte, tcpHeaderSize+1+len(pdu.Data))
 
@@ -107,10 +108,11 @@ func (mb *tcpPackager) Verify(aduRequest []byte, aduResponse []byte) (err error)
 }
 
 // Decode extracts PDU from TCP frame:
-//  Transaction identifier: 2 bytes
-//  Protocol identifier: 2 bytes
-//  Length: 2 bytes
-//  Unit identifier: 1 byte
+//
+//	Transaction identifier: 2 bytes
+//	Protocol identifier: 2 bytes
+//	Length: 2 bytes
+//	Unit identifier: 1 byte
 func (mb *tcpPackager) Decode(adu []byte) (pdu *ProtocolDataUnit, err error) {
 	// Read length value in the header
 	length := binary.BigEndian.Uint16(adu[4:])
@@ -251,7 +253,7 @@ func (mb *tcpTransporter) Close() error {
 // flush flushes pending data in the connection,
 // returns io.EOF if connection is closed.
 func (mb *tcpTransporter) flush(b []byte) (err error) {
-	if err = mb.conn.SetReadDeadline(time.Now()); err != nil {
+	if err = mb.conn.SetReadDeadline(time.Now().Add(time.Millisecond)); err != nil {
 		return
 	}
 	// Timeout setting will be reset when reading
@@ -269,7 +271,7 @@ func (mb *tcpTransporter) flush(b []byte) (err error) {
  * the read deadline.
  */
 func (mb *tcpTransporter) flushAll() (int, error) {
-	if err := mb.conn.SetReadDeadline(time.Now()); err != nil {
+	if err := mb.conn.SetReadDeadline(time.Now().Add(time.Millisecond)); err != nil {
 		return 0, err
 	}
 
