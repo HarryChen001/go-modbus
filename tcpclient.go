@@ -219,6 +219,10 @@ func (mb *tcpTransporter) Connect() error {
 	return mb.connect()
 }
 
+func (mb *tcpTransporter) GetNetConnection() net.Conn {
+	return mb.conn
+}
+
 func (mb *tcpTransporter) connect() error {
 	if mb.conn == nil {
 		dialer := net.Dialer{Timeout: mb.Timeout}
