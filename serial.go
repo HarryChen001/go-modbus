@@ -41,8 +41,8 @@ func (mb *serialPort) Connect() (err error) {
 	return mb.connect()
 }
 
-func (mb *serialPort) GetSerialPort() io.ReadWriteCloser {
-	return mb.port
+func (mb *serialPort) GetSerialPort() serial.Port {
+	return mb.port.(serial.Port)
 }
 
 // connect connects to the serial port if it is not connected. Caller must hold the mutex.
