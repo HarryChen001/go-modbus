@@ -280,7 +280,7 @@ func (mb *tcpTransporter) flushAll() (int, error) {
 	}
 
 	count := 0
-	buffer := make([]byte, 1024)
+	buffer := make([]byte, 10)
 
 	for {
 		n, err := mb.conn.Read(buffer)
